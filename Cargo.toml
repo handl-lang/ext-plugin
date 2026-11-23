@@ -5,9 +5,13 @@ edition = "2024"
 description = "`hnl plugin` — plugin management as a dynamic `hnl` extension (ADR-0149)."
 license = "MIT"
 repository = "https://github.com/handl-lang/ext-plugin"
+homepage = "https://handl-lang.github.io/docs/ext-plugin/"
+documentation = "https://handl-lang.github.io/docs/ext-plugin/reference/"
 readme = "README.md"
 keywords = ["handl", "extension", "cli"]
 categories = ["development-tools"]
+# Git-install only: https://github.com/handl-lang/ext-plugin (no crates.io).
+publish = false
 
 [lib]
 # `cdylib` is the shipped artifact (`libhnl_ext_plugin.{so,dylib,dll}`);
@@ -20,23 +24,5 @@ handl-platform = { git = "https://github.com/handl-lang/host", branch = "main" }
 handl-plugin-ext-plugin = { git = "https://github.com/handl-lang/host", branch = "main" }
 serde_json = "1"
 
-# ADR-0128 §Resolution: local development resolves sibling-repo deps from
-# sibling checkouts; without the checkouts (or this block), the git sources
-# are used. Same dev-link pattern as the `lib-*` repos.
-
 [profile.dev]
 opt-level = 1
-
-[patch."https://github.com/handl-lang/kernel"]
-handl-calculus = { path = "../kernel/crates/handl-calculus" }
-handl-ext = { path = "../kernel/crates/handl-ext" }
-handl-value = { path = "../kernel/crates/handl-value" }
-
-[patch."https://github.com/handl-lang/native"]
-
-[patch."https://github.com/handl-lang/otlp"]
-
-[patch."https://github.com/handl-lang/host"]
-handl-platform = { path = "../host/crates/platform" }
-handl-plugin-ext-plugin = { path = "../host/crates/plugin-ext-plugin" }
-
