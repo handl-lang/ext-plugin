@@ -1,3 +1,33 @@
+# ext-plugin
+
+`hnl-ext-plugin` — `hnl plugin` as a dynamic `hnl` extension: plugin
+management packaged as a `libhnl_ext_plugin.{so,dylib,dll}` cdylib the
+dumb `hnl` host discovers at runtime.
+
+## Layout
+
+| path | role |
+| --- | --- |
+| `src/` | extension ABI exports + `plugin` command wiring |
+| `xtask/` | vendored gate crate (`fmt`, `clippy`, `test`, `doc`, `gate`) |
+| `workflows/gate.yaml` | per-push gate — `handl-gates` rust campaign via bupha |
+
+## Contract
+
+- Commands: `hnl plugin <add|remove|info> [args...]` — runs the `plugin`
+  capability of `handl-plugin-ext-plugin`'s `PluginManagerPlugin` inside
+  a `DefaultHost`.
+- Object responses (`{"added": …}`) print nothing; errors go to stderr
+  with exit 2. `plugin add <name> --path …` still requires a `load`
+  capability plugin, which this extension does not register.
+- Builds `cdylib` + `rlib`; `cargo test` links the `rlib` statically.
+
+## Verification
+
+```bash
+cargo run --manifest-path xtask/Cargo.toml -- gate   # fmt → clippy → test → doc
+```
+
 <!-- myco:agent-awareness -->
 
 ## Agent awareness
